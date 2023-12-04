@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if object_list %}
+<h3>All my lists</h3>
+{% endif %}
+<form method="get" action="{% url 'index' %}">
+    {{ form.as_p }}
+    <label for="priority_filter">Priority:</label>
+    <select name="priority_filter" id="priority_filter">
+        <option value="">All</option>
+        {% for choice in priority_choices %}
+            <option value="{{ choice.0 }}" {% if choice.0 == selected_priority %}selected{% endif %}>
+                {{ choice.1 }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+</form>
+<ul>
+    {% for todolist in object_list %}
+    <li>
+        <div
+            role="button"
+            onclick="location.href='{% url "list" todolist.id %}'">
+            {{ todolist.title }} - Priority: {{ todolist.get_priority_display }}
+            - Created: {{ todolist.created_date | date:"Y-m-d" }}
+        </div>
+    </li>
+    {% empty %}
+    <h4>You have no lists!</h4>
+    {% endfor %}
+</ul>
+<p>
+    <input
+        value="Add a new list"
+        type="button"
+        onclick="location.href='{% url "list-add" %}'"/>
+</p>
+{% endblock %}
