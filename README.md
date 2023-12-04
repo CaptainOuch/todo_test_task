@@ -1,4 +1,4 @@
-docker-compose up --build
+docker-compose up
 
 
 http://localhost:8080
